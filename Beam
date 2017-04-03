@@ -1,0 +1,135 @@
+import json
+import requests
+
+base_url = "https://beam.pro/api/v1"
+
+
+class User(object):
+
+    def __init__(self, username=None, info=None):
+        if not info:
+            self.username = username
+            self.info = self._user()
+        else:
+            self.username = info["username"]
+            self.info = info
+
+    def recordings(self, channel, limit=20, order=None, where=None, fields=None):
+        data = {
+            "limit": limit
+        }
+
+        if order:
+            data["order"] = order
+
+        if where:
+            data["where"] = where
+
+        if fields:
+            data["fields"] = fields
+
+        recordings = requests.get("{}/channels/{}/recordings".format(base_url, channel), data=data)
+        print recordings.reason, pp(json.loads(recordings.content))
+
+    def _users(self, limit=20, order=None, where=None, fields=None):
+        data = {
+            "limit": limit
+        }
+
+        if order:
+            data["order"] = order
+
+        if where:
+            data["where"] = where
+
+        if fields:
+            data["fields"] = fields
+
+        users = requests.get("{}/users/search".format(base_url), params=data)
+        if users.status_code is not 200:
+            raise requests.RequestException("Didn't receive successful response from server: {}: {}",
+                                            users.status_code,
+                                            users.reason
+                                            )
+        return json.loads(users.content)
+
+    def _user(self):
+        user = self._users(order="username:DESC", limit=1, where="username:eq:{}".format(self.username))[0]
+        return user
+
+    @staticmethod
+    def getTeamUsers(teamid):
+        team = requests.get("{}/teams/{}/users".format(base_url, teamid))
+        if team.status_code is not 200:
+            raise requests.RequestException("Didn't receive successful response from server: {}: {}",
+                                            team.status_code,
+                                            team.reason
+                                            )
+        return json.loads(team.content)import json
+import requests
+
+base_url = "https://beam.pro/api/v1"
+
+
+class User(object):
+
+    def __init__(self, username=None, info=None):
+        if not info:
+            self.username = username
+            self.info = self._user()
+        else:
+            self.username = info["username"]
+            self.info = info
+
+    def recordings(self, channel, limit=20, order=None, where=None, fields=None):
+        data = {
+            "limit": limit
+        }
+
+        if order:
+            data["order"] = order
+
+        if where:
+            data["where"] = where
+
+        if fields:
+            data["fields"] = fields
+
+        recordings = requests.get("{}/channels/{}/recordings".format(base_url, channel), data=data)
+        print recordings.reason, pp(json.loads(recordings.content))
+
+    def _users(self, limit=20, order=None, where=None, fields=None):
+        data = {
+            "limit": limit
+        }
+
+        if order:
+            data["order"] = order
+
+        if where:
+            data["where"] = where
+
+        if fields:
+            data["fields"] = fields
+
+        users = requests.get("{}/users/search".format(base_url), params=data)
+        if users.status_code is not 200:
+            raise requests.RequestException("Didn't receive successful response from server: {}: {}",
+                                            users.status_code,
+                                            users.reason
+                                            )
+        return json.loads(users.content)
+
+    def _user(self):
+        user = self._users(order="username:DESC", limit=1, where="username:eq:{}".format(self.username))[0]
+        return user
+
+    @staticmethod
+    def getTeamUsers(teamid):
+        team = requests.get("{}/teams/{}/users".format(base_url, teamid))
+        if team.status_code is not 200:
+            raise requests.RequestException("Didn't receive successful response from server: {}: {}",
+                                            team.status_code,
+                                            team.reason
+                                            )
+        return json.loads(team.content)
