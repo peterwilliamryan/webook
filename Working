@@ -3,7 +3,7 @@ var Discordie = require('discordie');
  const Events = Discordie.Events;
  const client = new discordie();
 
- client.connet({
+ client.connect({
    token: 'Mjk4MTgxNjkxOTY3Nzk5Mjk5.C8fs0Q.a0-XkoDK-GI0zxY146IKn5wxcls'
 
 
