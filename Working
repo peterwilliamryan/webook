@@ -1,0 +1,18 @@
+var Discordie = require('discordie');
+
+ const Events = Discordie.Events;
+ const client = new discordie();
+
+ client.connet({
+   token: 'Mjk4MTgxNjkxOTY3Nzk5Mjk5.C8fs0Q.a0-XkoDK-GI0zxY146IKn5wxcls'
+
+
+ client.Dispatcher.on(Events.Gateway_ready, e =>{
+  Console.log('Connected as: ' + client.User.username);
+});
+
+client.Dispatcher.on(Events.MESSAGE_CREATE, e => {
+ if (e.message.content == 'ping') {
+   e.message.channel.sendMessage('pong');
+  }
+}); 
